@@ -15,7 +15,7 @@
             this.game.load.audio('level01Audio', 'assets/audio/Teriaah.ogg');
             this.game.load.audio('hitEnemyAudio', 'assets/audio/stop.ogg');
             this.game.load.audio('explosionAudio', 'assets/audio/explosion.ogg');
-            this.game.load.audio('shootPlayerAudio', 'assets/audio/laser5.mp3');
+            this.game.load.audio('shootPlayerAudio', 'assets/audio/laser5.ogg');
             this.game.load.audio('superSaiyanAudio', 'assets/audio/Dragon_Ball_Z_-_Super_Saiyan_Sound_Effect.ogg');
             this.game.load.audio('shenronAudio', 'assets/audio/AGE-DBZ-Shenron_eyes_Glowing.ogg');
             this.game.load.audio('powerUpGetAudio', 'assets/audio/pepSound3.ogg');

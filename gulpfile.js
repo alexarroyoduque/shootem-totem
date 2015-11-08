@@ -12,7 +12,7 @@ var gulp = require('gulp')
   , paths;
 
 paths = {
-  assets: 'src/assets/**/*',
+  assets: ['src/assets/**/*', '!src/assets/**/*.psd', '!src/assets/**/*.mp3'],
   css:    'src/css/*.css',
   libs:   [
     'src/bower_components/phaser-official/build/custom/phaser-arcade-physics.min.js'
