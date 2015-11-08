@@ -1,9 +1,9 @@
 {
   "name": "shootem-totem",
   "description": "",
-  "readme": "",
-  "repository": "",
-  "version": "0.0.1",
+  "readme": "README.md",
+  "repository": "https://github.com/alexarroyoduque/shootem-totem",
+  "version": "0.0.2",
   "dependencies": {},
 
   "devDependencies": {

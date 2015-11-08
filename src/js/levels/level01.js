@@ -11,7 +11,7 @@
             this.levelId = '01';
             utils.resetVars();
             this.music = this.game.add.audio('level01Audio');
-            this.music.play('', 0, 0.5, true);
+            // this.music.play('', 0, 0.5, true);
             audioUtils.createLevelAudios(this);
 
             this.bg1 = this.game.add.tileSprite(0, 0, 800, 600, 'background01');
@@ -20,7 +20,12 @@
             enemyUtils.resetTimes(this);
             utils.resetTimes(this);
 
-            playerUtils.createPlayer(this, 1);
+            if (gameUtils.mode === 'twoPlayers') {
+
+            } else {
+                playerUtils.generatePlayers(this);
+                playerUtils.createPlayer(this, 0);
+            }
             playerUtils.generateBullets(this);
             playerUtils.generatePowerUpsPool(this);
 
@@ -38,22 +43,19 @@
 
             utils.generateEmitters(this);
 
-            this.game.input.onDown.add(utils.gofull, this);
+            // this.game.input.onDown.add(utils.gofull, this);
+
             // utils.debugSpriteArcade('square', this);
         },
         update: function() {
-            playerUtils.actions(this);
-            this.player1.textDamage.x = this.player1.x;
-
-            this.player1.playerPowerUp.x = this.player1.x;
-
+            playerUtils.managePlayers(this);
             this.game.physics.arcade.overlap(this.bullets, this.enemies, collisions.withPlayerBullets, null, this);
             this.game.physics.arcade.overlap(this.bullets, this.bossGroup, collisions.withPlayerBullets, null, this);
-            this.game.physics.arcade.overlap(this.enemyBullets, this.player1, collisions.withEnemyBullets, null, this);
-            this.game.physics.arcade.overlap(this.enemies, this.player1, collisions.withEnemies, null, this);
-            this.game.physics.arcade.overlap(this.items, this.player1, collisions.withItems, null, this);
-            this.game.physics.arcade.overlap(this.triforcesGroup, this.player1, collisions.withTriforces, null, this);
-            this.game.physics.arcade.overlap(this.dragonBalls, this.player1, collisions.withDragonBalls, null, this);
+            this.game.physics.arcade.overlap(this.enemyBullets, this.playersGroup, collisions.withEnemyBullets, null, this);
+            this.game.physics.arcade.overlap(this.enemies, this.playersGroup, collisions.withEnemies, null, this);
+            this.game.physics.arcade.overlap(this.items, this.playersGroup, collisions.withItems, null, this);
+            this.game.physics.arcade.overlap(this.triforcesGroup, this.playersGroup, collisions.withTriforces, null, this);
+            this.game.physics.arcade.overlap(this.dragonBalls, this.playersGroup, collisions.withDragonBalls, null, this);
 
             this.enemies.forEachAlive(enemyUtils.enemyShoots, this);
             this.bossGroup.forEachAlive(enemyUtils.bossAttack, this);
@@ -70,10 +72,6 @@
             } else {
                 this.bg1.tilePosition.y += 6.5;
                 this.bg2.tilePosition.y += 8;
-            }
-
-            if (this.player1.isSaiyan) {
-                utils.spawnSaiyanParticles(this, this.player1);
             }
 
             if (!this.stopDefaultBehavior) {

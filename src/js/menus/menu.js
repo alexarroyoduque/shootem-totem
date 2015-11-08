@@ -11,7 +11,7 @@
             menuUtils.addBackground(this);
 
             var name = this.game.add.text(30, 540, 'Alejandro Arroyo Duque', menuUtils.style);
-            var version = this.game.add.text(30, 560, utils.version, menuUtils.style);
+            var version = this.game.add.text(30, 560, gameUtils.version, menuUtils.style);
             name.alpha = 0.3;
             version.alpha = 0.3;
 

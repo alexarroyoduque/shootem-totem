@@ -7,10 +7,15 @@ collisions.withPlayerBullets = function(bullet, enemy) {
     bullet.kill();
     audioUtils.playHitEnemyAudio(this);
 
-    this.player1.score += enemy.points;
-    interfaceUtils.updateScorePanel(this);
+    var playerWhoAttack = this.playersGroup.filter(function(child, index, children) {
+        return bullet.numPlayer === child.numPlayer;
+    }, true);
 
-    if (this.player1.score > utils.pointsToNextTriforce) {
+    playerWhoAttack.list[0].score += enemy.points;
+    utils.totalPoints+= enemy.points;
+    interfaceUtils.updateScorePanel(this, playerWhoAttack.list[0]);
+
+    if (utils.totalPoints > utils.pointsToNextTriforce) {
         utils.spawnTriforce(this);
         utils.pointsToNextTriforce = utils.pointsToNextTriforce + 5000;
     }
@@ -33,7 +38,7 @@ collisions.withPlayerBullets = function(bullet, enemy) {
     }
 };
 
-collisions.withItems = function(player, item) {
+collisions.withItems = function(item, player) {
     if (!player.item) {
         item.kill();
         audioUtils.playPowerUpGetAudio(this);
@@ -49,7 +54,7 @@ collisions.withItems = function(player, item) {
     }
 };
 
-collisions.withTriforces = function(player, triforce) {
+collisions.withTriforces = function(triforce, player) {
     triforce.kill();
     if (utils.triforceInPlayer < 3) {
         utils.triforceInPlayer++;
@@ -59,7 +64,7 @@ collisions.withTriforces = function(player, triforce) {
     }
 };
 
-collisions.withEnemies = function(player, enemy) {
+collisions.withEnemies = function(enemy, player) {
     utils.spawnCollisionsEnemyParticles(this, enemy);
     utils.spawnCollisionsParticlesPlayer1(this, enemy);
     collisions.checkIfPlayerDie(this, player, enemy);
@@ -69,14 +74,14 @@ collisions.withEnemies = function(player, enemy) {
 
 };
 
-collisions.withEnemyBullets = function(player, enemyBullet) {
+collisions.withEnemyBullets = function(enemyBullet, player) {
     enemyBullet.kill();
     utils.spawnCollisionsParticlesPlayer1(this, enemyBullet);
     collisions.checkIfPlayerDie(this, player, enemyBullet);
     audioUtils.playHitEnemyAudio(this);
 };
 
-collisions.withDragonBalls = function(player, dragonBall) {
+collisions.withDragonBalls = function(dragonBall, player) {
     dragonBall.kill();
     if (utils.dragonBallsInPlayer < 7) {
         utils.dragonBallsInPlayer++;
@@ -88,11 +93,10 @@ collisions.withDragonBalls = function(player, dragonBall) {
 collisions.killPlayer = function (player, theGame) {
     player.kill();
     audioUtils.playExplosionAudio(theGame);
-    theGame.player1.textDamage.setText('');
-    theGame.player1.textDamage.fill = '#000';
+    player.textDamage.setText('');
+    player.textDamage.fill = '#000';
     player.item = '';
     player.playerPowerUp.alpha = 0;
-
 
     if (playerUtils.lifes > 0) {
         playerUtils.revivePlayer(player, theGame)

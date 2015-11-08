@@ -142,16 +142,16 @@ enemyUtils.enemyShoots = function(enemy) {
                 enemyBullet.body.velocity.y = enemy.bulletVelocityY;
             } else if (enemy.key === 'diamond') {
                 enemyBullet.body.sprite.frame = 1;
-                this.game.physics.arcade.moveToObject(enemyBullet, this.player1, enemy.bulletVelocityY);
+                this.game.physics.arcade.moveToObject(enemyBullet, this.playersGroup.getRandom(), enemy.bulletVelocityY);
             } else if (enemy.key === 'pentagon') {
                 enemyBullet.body.sprite.frame = 2;
                 enemyBullet.body.velocity.y = enemy.bulletVelocityY;
             } else if (enemy.key === 'rectangle') {
                 enemyBullet.body.sprite.frame = 3;
-                this.game.physics.arcade.moveToObject(enemyBullet, this.player1, enemy.bulletVelocityY);
+                this.game.physics.arcade.moveToObject(enemyBullet, this.playersGroup.getRandom(), enemy.bulletVelocityY);
             } else if (enemy.key === 'pyramid') {
                 enemyBullet.body.sprite.frame = 4;
-                this.game.physics.arcade.moveToObject(enemyBullet, this.player1, enemy.bulletVelocityY);
+                this.game.physics.arcade.moveToObject(enemyBullet, this.playersGroup.getRandom(), enemy.bulletVelocityY);
             }
         }
     }
@@ -169,7 +169,7 @@ enemyUtils.bossAttack = function(enemy) {
 
             if (enemy.key === 'stargate') {
                 enemyBullet.body.sprite.frame = 4;
-                this.game.physics.arcade.moveToObject(enemyBullet, this.player1, enemy.bulletVelocityY);
+                this.game.physics.arcade.moveToObject(enemyBullet, this.playersGroup.getRandom(), enemy.bulletVelocityY);
             }
 
         }

@@ -1,11 +1,11 @@
 var utils = {
-    version: '0.0.1',
     pointsToNextTriforceOriginal: 5000,
     pointsToNextTriforce: 5000,
     triforceInPlayer: 0,
     timeToNextDragonBall: 10000,
     timeToNextDragonBallOriginal: 10000,
-    dragonBallsInPlayer: 0
+    dragonBallsInPlayer: 0,
+    totalPoints: 0
 };
 
 utils.getRandomInt = function(min, max) {
@@ -17,6 +17,7 @@ utils.resetVars = function (theGame) {
     utils.timeToNextDragonBall = utils.timeToNextDragonBallOriginal,
     utils.triforceInPlayer = 0;
     utils.dragonBallsInPlayer = 0;
+    utils.totalPoints = 0;
     playerUtils.lifes = playerUtils.lifesOriginal;
 
     enemyUtils.spawnSquaresTime.current = enemyUtils.spawnSquaresTime.currentOriginal;
@@ -34,7 +35,9 @@ utils.createVars = function (theGame) {
     theGame.enemies;
     theGame.bossGroup;
 
-    theGame.player1;
+    theGame.playersGroup;
+    theGame.player0ScoreText;
+    theGame.player1ScoreText;
     theGame.cursors;
     theGame.shootTime = 200;
     theGame.actionControls;
