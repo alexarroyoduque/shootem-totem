@@ -1,7 +1,7 @@
 var gameUtils = {
-    version: '0.0.2',
+    version: '0.0.3',
     defaultMode: 'onePlayer',
-    mode: 'twoPlayers' //onePlayer
+    mode: 'onePlayer' //onePlayer, twoPlayers
 };
 
 gameUtils.resetGameMode = function () {
