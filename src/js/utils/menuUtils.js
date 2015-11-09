@@ -70,7 +70,7 @@ menuUtils.setupButtonText = function (text) {
 
 menuUtils.setupButton = function (button) {
     button.anchor.setTo(0.5, 0.5);
-    button.tint = 0xf44336;
+    button.tint = 0x03A9F4;
     button.onInputOver.add(this.over, this);
     button.onInputOut.add(this.out, this);
     button.onInputUp.add(this.out, this);
@@ -81,5 +81,9 @@ menuUtils.addCursorParticles = function(theGame) {
         utils.spawnCollisionsEnemyParticles(theGame, theGame.game.input);
         theGame.particlesButtonTime = theGame.game.time.now + 150;
     }
+};
+
+menuUtils.tintBackButton = function (button) {
+    button.tint = 0xf44336;
 };
 

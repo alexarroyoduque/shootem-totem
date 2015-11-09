@@ -13,10 +13,16 @@ Shootem Totem is a shoote'm up game tribute to great classic from my childhood. 
 
 ### Two players (local)
 
-*In future release*
-
     + Keyboard
     + XBOX pad
+
+### Three players (local)
+
+*In future release*
+
+### Four players (local)
+
+*In future release*
 
 
 ### Three or four players (Online)

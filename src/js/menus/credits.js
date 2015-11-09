@@ -28,6 +28,7 @@
             this.buttonGroup.forEach(menuUtils.setupButton, this);
             this.buttonTextGroup.forEach(menuUtils.setupButtonText, this);
 
+            menuUtils.tintBackButton(this.buttonGroup.getAt(0));
             this.particlesButtonTime = 100;          
             utils.generateEmitters(this);
         },

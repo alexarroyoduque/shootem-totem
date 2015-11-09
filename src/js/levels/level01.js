@@ -11,7 +11,7 @@
             this.levelId = '01';
             utils.resetVars();
             this.music = this.game.add.audio('level01Audio');
-            // this.music.play('', 0, 0.5, true);
+            this.music.play('', 0, 0.5, true);
             audioUtils.createLevelAudios(this);
 
             this.bg1 = this.game.add.tileSprite(0, 0, 800, 600, 'background01');
@@ -20,14 +20,7 @@
             enemyUtils.resetTimes(this);
             utils.resetTimes(this);
 
-            if (gameUtils.mode === 'twoPlayers') {
-
-            } else {
-                playerUtils.generatePlayers(this);
-                playerUtils.createPlayer(this, 0);
-            }
-            playerUtils.generateBullets(this);
-            playerUtils.generatePowerUpsPool(this);
+            playerUtils.addPlayers(this);
 
             interfaceUtils.createHud(this);
             interfaceUtils.createScorePanel(this);
@@ -43,7 +36,7 @@
 
             utils.generateEmitters(this);
 
-            // this.game.input.onDown.add(utils.gofull, this);
+            this.game.input.onDown.add(utils.gofull, this);
 
             // utils.debugSpriteArcade('square', this);
         },

@@ -11,14 +11,17 @@ collisions.withPlayerBullets = function(bullet, enemy) {
         return bullet.numPlayer === child.numPlayer;
     }, true);
 
-    playerWhoAttack.list[0].score += enemy.points;
-    utils.totalPoints+= enemy.points;
-    interfaceUtils.updateScorePanel(this, playerWhoAttack.list[0]);
+    if (playerWhoAttack.length) {
+        playerWhoAttack.list[0].score += enemy.points;
+        utils.totalPoints+= enemy.points;
+        interfaceUtils.updateScorePanel(this, playerWhoAttack.list[0]);
 
-    if (utils.totalPoints > utils.pointsToNextTriforce) {
-        utils.spawnTriforce(this);
-        utils.pointsToNextTriforce = utils.pointsToNextTriforce + 5000;
+        if (utils.totalPoints > utils.pointsToNextTriforce) {
+            utils.spawnTriforce(this);
+            utils.pointsToNextTriforce = utils.pointsToNextTriforce + 5000;
+        }
     }
+
 
     utils.spawnCollisionsEnemyParticles(this, bullet);
     enemy.damage(bullet.damagePoints);
@@ -66,7 +69,7 @@ collisions.withTriforces = function(triforce, player) {
 
 collisions.withEnemies = function(enemy, player) {
     utils.spawnCollisionsEnemyParticles(this, enemy);
-    utils.spawnCollisionsParticlesPlayer1(this, enemy);
+    utils.spawnCollisionsParticlesPlayer(this, player, enemy);
     collisions.checkIfPlayerDie(this, player, enemy);
     enemy.kill();
     audioUtils.playHitEnemyAudio(this);
@@ -76,7 +79,7 @@ collisions.withEnemies = function(enemy, player) {
 
 collisions.withEnemyBullets = function(enemyBullet, player) {
     enemyBullet.kill();
-    utils.spawnCollisionsParticlesPlayer1(this, enemyBullet);
+    utils.spawnCollisionsParticlesPlayer(this, player, enemyBullet);
     collisions.checkIfPlayerDie(this, player, enemyBullet);
     audioUtils.playHitEnemyAudio(this);
 };
@@ -100,7 +103,7 @@ collisions.killPlayer = function (player, theGame) {
 
     if (playerUtils.lifes > 0) {
         playerUtils.revivePlayer(player, theGame)
-    } else {
+    } else if (!theGame.playersGroup.getFirstAlive()) {
         utils.gameOver(theGame);
     }
 };

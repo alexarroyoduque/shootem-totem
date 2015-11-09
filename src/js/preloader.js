@@ -75,7 +75,7 @@
 
         update: function() {
             if (!!this.ready) {
-                this.game.state.start('level01');
+                this.game.state.start('opening');
                 // this.game.state.start('opening');
                 // this.game.state.start('menu');
                 // this.game.state.start('level01');

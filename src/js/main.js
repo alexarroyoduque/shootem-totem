@@ -9,6 +9,7 @@ window.addEventListener('load', function() {
     game.state.add('menu', ns.Menu);
     game.state.add('credits', ns.Credits);
     game.state.add('manual', ns.Manual);
+    game.state.add('gameMode', ns.GameMode);
     // levels
     game.state.add('level01', ns.Level01);
     /* yo phaser:state new-state-files-put-here */

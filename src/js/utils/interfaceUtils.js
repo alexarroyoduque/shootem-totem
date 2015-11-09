@@ -57,13 +57,25 @@ interfaceUtils.createScorePanel = function (theGame) {
     theGame.player0ScoreText.anchor.setTo(1, 0);
     theGame.player0ScoreText.alpha = 0.8;
 
+
+    if (gameUtils.mode === 'twoPlayers') {
+        theGame.player1ScoreText = theGame.game.add.text(780, 40, '0', {
+            font: style.font,
+            align: style.font,
+            fill: '#00E5FF'
+        });
+
+        theGame.player1ScoreText.anchor.setTo(1, 0);
+        theGame.player1ScoreText.alpha = 0.8;
+    }
+
 };
 
 interfaceUtils.updateScorePanel = function (theGame, player) {
     if (!player.numPlayer || player.numPlayer === 0) {
         theGame.player0ScoreText.setText(player.score);
     } else if (player.numPlayer === 1) {
-
+        theGame.player1ScoreText.setText(player.score);
     }
 };
 

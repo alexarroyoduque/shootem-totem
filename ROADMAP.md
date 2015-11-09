@@ -91,7 +91,7 @@
     + Sonido super guerrero
 
 
-##0.0.2: phaser 2.2.4 (futuro)<i class='icon-cancel'></i>
+##0.0.2: phaser 2.2.4
 
 + Dos jugadores
     + En phaser gestionar los jugadores como grupo

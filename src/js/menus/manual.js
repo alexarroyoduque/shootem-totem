@@ -41,11 +41,7 @@
             this.buttonGroup.forEach(menuUtils.setupButton, this);
             this.buttonTextGroup.forEach(menuUtils.setupButtonText, this);
 
-            this.tintButton(this.buttonGroup.getAt(0))
-            this.tintButton(this.buttonGroup.getAt(1))
-            this.tintButton(this.buttonGroup.getAt(2))
-            this.tintButton(this.buttonGroup.getAt(3))
-            this.tintButton(this.buttonGroup.getAt(4))
+            menuUtils.tintBackButton(this.buttonGroup.getAt(5));
 
             this.particlesButtonTime = 100;          
             utils.generateEmitters(this);
@@ -66,7 +62,7 @@
             this.manual.frame = 3;
         },
         showOnline: function () {
-            this.manual.frame = 1;
+            this.manual.frame = 4;
         },
         back: function () {
             this.game.state.start('menu');

@@ -24,7 +24,7 @@
             this.buttonGroup = this.game.add.group();
             this.buttonTextGroup = this.game.add.group();
 
-            this.buttonGroup.add(this.game.add.button(centerX - 100, 300, 'buttonJumbo', this.play, this, 1, 0, 1));
+            this.buttonGroup.add(this.game.add.button(centerX - 100, 300, 'buttonJumbo', this.gameMode, this, 1, 0, 1));
             this.buttonTextGroup.add(this.game.add.text(centerX - 100, 300, 'Play', menuUtils.styleJumbo));
             this.buttonGroup.add(this.game.add.button(centerX + 100, 300, 'buttonJumbo', this.manual, this, 1, 0, 1));
             this.buttonTextGroup.add(this.game.add.text(centerX + 100, 300, 'Manual', menuUtils.styleJumbo));
@@ -36,17 +36,13 @@
             this.buttonTextGroup.add(this.game.add.text(centerX + 330, 560, 'Screen', menuUtils.style));
 
             this.buttonGroup.forEach(menuUtils.setupButton, this);
-            this.buttonGroup.forEach(this.tintButton, this);
             this.buttonTextGroup.forEach(menuUtils.setupButtonText, this);
 
             this.particlesButtonTime = 100;          
             utils.generateEmitters(this);
         },
-        tintButton: function (button) {
-            button.tint = 0x03A9F4;
-        },
-        play: function () {
-            this.game.state.start('level01');
+        gameMode: function () {
+            this.game.state.start('gameMode');
         },
         goFull: function () {
             utils.gofull(this);

@@ -41,6 +41,10 @@ utils.createVars = function (theGame) {
     theGame.cursors;
     theGame.shootTime = 200;
     theGame.actionControls;
+    theGame.pad1;
+    theGame.pad2;
+    theGame.pad3;
+    theGame.pad4;
 
     theGame.bg1;
     theGame.bg2;
@@ -54,14 +58,16 @@ utils.createVars = function (theGame) {
     theGame.hudTriforceText;
     theGame.hudDragonBalls;
     theGame.hudDragonBallsText;
-    theGame.updateScorePanel;
 
     theGame.items;
     theGame.powerUpsPool;
     theGame.triforcesGroup;
     theGame.dragonBalls;
     theGame.emitterCollisionWithEnemy
+    theGame.emitterCollisionWithPlayer0;
     theGame.emitterCollisionWithPlayer1;
+    theGame.emitterCollisionWithPlayer2;
+    theGame.emitterCollisionWithPlayer3;
     theGame.emitterExplosionEnemy;
     theGame.emitterSaiyan;
 };
@@ -182,8 +188,15 @@ utils.generateEmitters = function(theGame) {
     theGame.emitterSaiyan.minParticleScale = 1;
     theGame.emitterSaiyan.setAlpha(0.5, 0.8);
 
-    theGame.emitterCollisionWithPlayer1 = theGame.game.add.emitter(50);
-    theGame.emitterCollisionWithPlayer1.makeParticles('particles', 3);
+    theGame.emitterCollisionWithPlayer0 = theGame.game.add.emitter(20);
+    theGame.emitterCollisionWithPlayer0.makeParticles('particles', 3);
+    theGame.emitterCollisionWithPlayer0.gravity = gravity;
+    theGame.emitterCollisionWithPlayer0.maxParticleScale = maxScale;
+    theGame.emitterCollisionWithPlayer0.minParticleScale = minScale;
+    theGame.emitterCollisionWithPlayer0.setAlpha(0.5, 0.8);
+
+    theGame.emitterCollisionWithPlayer1 = theGame.game.add.emitter(20);
+    theGame.emitterCollisionWithPlayer1.makeParticles('particles', 4);
     theGame.emitterCollisionWithPlayer1.gravity = gravity;
     theGame.emitterCollisionWithPlayer1.maxParticleScale = maxScale;
     theGame.emitterCollisionWithPlayer1.minParticleScale = minScale;
@@ -211,11 +224,18 @@ utils.spawnSaiyanParticles = function(theGame, obj) {
     theGame.emitterSaiyan.start(true, 600, null, 1);
 };
 
-utils.spawnCollisionsParticlesPlayer1 = function(theGame, obj) {
-    theGame.emitterCollisionWithPlayer1.x = obj.x;
-    theGame.emitterCollisionWithPlayer1.y = obj.y;
+utils.spawnCollisionsParticlesPlayer = function(theGame, player, obj) {
+    if (player.numPlayer === 1) {
+        theGame.emitterCollisionWithPlayer1.x = obj.x;
+        theGame.emitterCollisionWithPlayer1.y = obj.y;
 
-    theGame.emitterCollisionWithPlayer1.start(true, 600, null, 3);
+        theGame.emitterCollisionWithPlayer1.start(true, 600, null, 3);
+    } else {
+        theGame.emitterCollisionWithPlayer0.x = obj.x;
+        theGame.emitterCollisionWithPlayer0.y = obj.y;
+
+        theGame.emitterCollisionWithPlayer0.start(true, 600, null, 3);
+    }
 };
 
 utils.checkIfPlayerHasAllTriforces = function(theGame) {

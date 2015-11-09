@@ -1,22 +1,35 @@
 var playerUtils = {
     velocity: 200,
-    shootTime: 150,
-    shootTimeInterval: 150,
     bulletVelocity: 450,
-    lifesOriginal: 2,
+    lifesOriginal: 0,
     lifes: 2,
     invulnerabilityTime: 3000,
     timeToVulnerable: 2000,
     saiyanTimeSeconds: 30,
     color: {
         one: 0x00c853,
+        two: 0x00E5FF,
         saiyan: 0xfff110
     },
     item: ''
 };
 
-playerUtils.managePlayers = function (theGame) {
-    theGame.playersGroup.forEachAlive(function (player) {
+playerUtils.addPlayers = function(theGame) {
+    playerUtils.generatePlayers(theGame);
+
+    if (gameUtils.mode === 'twoPlayers') {
+        playerUtils.createPlayer(theGame, 0);
+        playerUtils.createPlayer(theGame, 1);
+    } else {
+        playerUtils.createPlayer(theGame, 0);
+    }
+
+    playerUtils.generateBullets(theGame);
+    playerUtils.generatePowerUpsPool(theGame);
+};
+
+playerUtils.managePlayers = function(theGame) {
+    theGame.playersGroup.forEachAlive(function(player) {
         playerUtils.actions(theGame, player);
         player.textDamage.x = player.x;
         player.playerPowerUp.x = player.x;
@@ -30,70 +43,148 @@ playerUtils.actions = function(theGame, player) {
     if (player.alive) {
         player.body.velocity.setTo(0, 0);
 
-        if (player.cursors.left.isDown || theGame.pad1.isDown(player.cursorsPad.left)) {
-            player.body.velocity.x = -playerUtils.velocity;
-        } else if (player.cursors.right.isDown || theGame.pad1.isDown(player.cursorsPad.right)) {
-            player.body.velocity.x = playerUtils.velocity;
+        if (player.numPlayer === 1) {
+            if (player.cursors.left.isDown || theGame.pad2.isDown(player.cursorsPad.left)) {
+                player.body.velocity.x = -playerUtils.velocity;
+            } else if (player.cursors.right.isDown || theGame.pad2.isDown(player.cursorsPad.right)) {
+                player.body.velocity.x = playerUtils.velocity;
+            }
+
+            if (player.actionControls.shoot.isDown || theGame.pad2.isDown(player.actionControlsPad.shoot)) {
+                playerUtils.fireBullet(theGame, player);
+            }
+
+            if (player.actionControls.powerUp.isDown || theGame.pad2.isDown(player.actionControlsPad.powerUp)) {
+                playerUtils.firePowerUp(theGame, player);
+            }
+
+            if (player.actionControls.callShenron.isDown || theGame.pad2.isDown(player.actionControlsPad.callShenron)) {
+                playerUtils.callShenron(theGame, player);
+            }
+
+        } else {
+            if (player.cursors.left.isDown || theGame.pad1.isDown(player.cursorsPad.left)) {
+                player.body.velocity.x = -playerUtils.velocity;
+            } else if (player.cursors.right.isDown || theGame.pad1.isDown(player.cursorsPad.right)) {
+                player.body.velocity.x = playerUtils.velocity;
+            }
+
+            if (player.actionControls.shoot.isDown || theGame.pad1.isDown(player.actionControlsPad.shoot)) {
+                playerUtils.fireBullet(theGame, player);
+            }
+
+            if (player.actionControls.powerUp.isDown || theGame.pad1.isDown(player.actionControlsPad.powerUp)) {
+                playerUtils.firePowerUp(theGame, player);
+            }
+
+            if (player.actionControls.callShenron.isDown || theGame.pad1.isDown(player.actionControlsPad.callShenron)) {
+                playerUtils.callShenron(theGame, player);
+            }
+
         }
 
-        if (player.actionControls.shoot.isDown|| theGame.pad1.isDown(player.actionControlsPad.shoot)) {
-            playerUtils.fireBullet(theGame, player);
-        }
-
-        if (player.actionControls.powerUp.isDown || theGame.pad1.isDown(player.actionControlsPad.powerUp)) {
-            playerUtils.firePowerUp(theGame, player);
-        }
-
-        if (player.actionControls.callShenron.isDown|| theGame.pad1.isDown(player.actionControlsPad.callShenron)) {
-            playerUtils.callShenron(theGame, player);
-        }
     }
 };
 
+playerUtils.addPlayerOneKeyboardControls = function(player, theGame) {
+    player.cursors = {
+        'left': theGame.game.input.keyboard.addKey(65), //a
+        'right': theGame.game.input.keyboard.addKey(68), //d
+    };
+    player.actionControls = {
+        'shoot': theGame.game.input.keyboard.addKey(32), // space
+        'powerUp': theGame.game.input.keyboard.addKey(75), // k
+        'callShenron': theGame.game.input.keyboard.addKey(74), // j
+    };
+}
+
+playerUtils.addPlayerTwoKeyboardControls = function(player, theGame) {
+    player.cursors = {
+        'left': theGame.game.input.keyboard.addKey(37), // left arrow
+        'right': theGame.game.input.keyboard.addKey(39), // right arrow
+    };
+    player.actionControls = {
+        'shoot': theGame.game.input.keyboard.addKey(16), // shift
+        'powerUp': theGame.game.input.keyboard.addKey(38), // up arrow
+        'callShenron': theGame.game.input.keyboard.addKey(40), // down arrow
+    };
+}
+
+playerUtils.addPlayerOnePadControls = function(player, theGame) {
+    theGame.game.input.gamepad.start();
+    theGame.pad1 = theGame.game.input.gamepad.pad1;
+
+    player.cursorsPad = {
+        'left': Phaser.Gamepad.XBOX360_DPAD_LEFT,
+        'right': Phaser.Gamepad.XBOX360_DPAD_RIGHT,
+    };
+    player.actionControlsPad = {
+        'shoot': Phaser.Gamepad.XBOX360_RIGHT_TRIGGER,
+        'powerUp': Phaser.Gamepad.XBOX360_LEFT_TRIGGER,
+        'callShenron': Phaser.Gamepad.XBOX360_Y
+    };
+}
+
+playerUtils.addPlayerTwoPadControls = function(player, theGame) {
+    theGame.game.input.gamepad.start();
+    theGame.pad2 = theGame.game.input.gamepad.pad2;
+
+    player.cursorsPad = {
+        'left': Phaser.Gamepad.XBOX360_DPAD_LEFT,
+        'right': Phaser.Gamepad.XBOX360_DPAD_RIGHT,
+    };
+    player.actionControlsPad = {
+        'shoot': Phaser.Gamepad.XBOX360_RIGHT_TRIGGER,
+        'powerUp': Phaser.Gamepad.XBOX360_LEFT_TRIGGER,
+        'callShenron': Phaser.Gamepad.XBOX360_Y
+    };
+}
+
 playerUtils.mapControls = function(theGame, player, numPlayer) {
-    if (!numPlayer || numPlayer === 0) {
-        player.cursors = {
-            'left': theGame.game.input.keyboard.addKey(65), //a
-            'right': theGame.game.input.keyboard.addKey(68), //d
-        };
-        player.actionControls = {
-            'shoot': theGame.game.input.keyboard.addKey(32), // space
-            'powerUp': theGame.game.input.keyboard.addKey(75), // k
-            'callShenron': theGame.game.input.keyboard.addKey(74), // j
-        };
+    if (gameUtils.mode === 'twoPlayers') {
+        if (numPlayer === 1) {
+            playerUtils.addPlayerTwoKeyboardControls(player, theGame);
+        } else {
+            playerUtils.addPlayerOneKeyboardControls(player, theGame);
+        }
+    } else if (gameUtils.mode === 'onePlayer') {
+        if (!numPlayer || numPlayer === 0) {
+            playerUtils.addPlayerOneKeyboardControls(player, theGame);
+        }
     }
 };
 
 // xbox controls
 playerUtils.mapControlsPad = function(theGame, player, numPlayer) {
-    if (!numPlayer || numPlayer === 0) {
-        theGame.game.input.gamepad.start();
-        theGame.pad1 = theGame.game.input.gamepad.pad1;
-
-        player.cursorsPad = {
-            'left': Phaser.Gamepad.XBOX360_DPAD_LEFT,
-            'right': Phaser.Gamepad.XBOX360_DPAD_RIGHT,
-        };
-        player.actionControlsPad = {
-            'shoot': Phaser.Gamepad.XBOX360_RIGHT_TRIGGER,
-            'powerUp': Phaser.Gamepad.XBOX360_LEFT_TRIGGER,
-            'callShenron': Phaser.Gamepad.XBOX360_Y
-        };
+    if (gameUtils.mode === 'twoPlayers') {
+        if (numPlayer === 1) {
+            playerUtils.addPlayerTwoPadControls(player, theGame);
+        } else {
+            playerUtils.addPlayerOnePadControls(player, theGame);
+        }
+    } else if (gameUtils.mode === 'onePlayer') {
+        if (!numPlayer || numPlayer === 0) {
+            playerUtils.addPlayerOnePadControls(player, theGame);
+        }
     }
 };
 
-playerUtils.generatePlayers = function (theGame) {
+playerUtils.generatePlayers = function(theGame) {
     theGame.playersGroup = theGame.game.add.group();
     theGame.playersGroup.enableBody = true;
     theGame.playersGroup.physicsBodyType = Phaser.Physics.ARCADE;
-    theGame.playersGroup.createMultiple(2, 'player');
+    if (gameUtils.mode === 'twoPlayers') {
+        theGame.playersGroup.createMultiple(2, 'player');
+    } else {
+        theGame.playersGroup.createMultiple(1, 'player');
+    }
     theGame.playersGroup.setAll('anchor.x', 0.5);
     theGame.playersGroup.setAll('anchor.y', 0.5);
     theGame.playersGroup.setAll('body.fixedRotation', true);
     theGame.playersGroup.setAll('body.collideWorldBounds', true);
 };
 
-playerUtils.setupPlayer = function (player, theGame) {
+playerUtils.setupPlayer = function(player, theGame) {
     var style = {
         font: "18px Inconsolata",
         fill: "#000",
@@ -102,6 +193,8 @@ playerUtils.setupPlayer = function (player, theGame) {
     theGame.game.physics.enable(player, Phaser.Physics.ARCADE);
     player.timeToVulnerable = playerUtils.timeToVulnerable;
     player.body.setSize(50, 35, 0, 10);
+    player.shootTime = 150;
+    player.shootTimeInterval = 150;
     player.score = 0;
     player.damagePlayer = 0;
     player.textDamage = theGame.game.add.text(player.x, player.y + 15, player.damagePlayer + '%', style);
@@ -111,22 +204,33 @@ playerUtils.setupPlayer = function (player, theGame) {
     player.playerPowerUp.anchor.setTo(0.5, 0.5);
     player.item = playerUtils.item;
     player.isSaiyan = false;
-    player.body.sprite.tint = playerUtils.color.one;
+    if (player.numPlayer === 0) {
+        player.originalTint = playerUtils.color.one;
+        player.body.sprite.tint = playerUtils.color.one;
+    } else if (player.numPlayer === 1) {
+        player.originalTint = playerUtils.color.two;
+        player.body.sprite.tint = playerUtils.color.two;
+    }
 };
 
 
 playerUtils.createPlayer = function(theGame, numPlayer) {
     var newPlayer = theGame.playersGroup.getFirstExists(false);
-    newPlayer.reset(400, 550, 'player');
+    if (numPlayer === 1) {
+        newPlayer.reset(500, 550, 'player');
+    } else {
+        newPlayer.reset(400, 550, 'player');
+    }
     newPlayer.numPlayer = numPlayer;
     playerUtils.setupPlayer(newPlayer, theGame);
 
-    playerUtils.mapControls(theGame, newPlayer, 0);
-    playerUtils.mapControlsPad(theGame, newPlayer, 0)
+
+    playerUtils.mapControls(theGame, newPlayer, numPlayer);
+    playerUtils.mapControlsPad(theGame, newPlayer, numPlayer)
 };
 
 playerUtils.fireBullet = function(theGame, player) {
-    if (theGame.game.time.now > playerUtils.shootTime) {
+    if (theGame.game.time.now > player.shootTime) {
         var bullet = theGame.bullets.getFirstExists(false);
 
         if (bullet) {
@@ -142,10 +246,10 @@ playerUtils.fireBullet = function(theGame, player) {
                 bullet.tint = playerUtils.color.saiyan;
                 bullet.damagePoints = 2;
             } else {
-                bullet.tint = playerUtils.color.one;
+                bullet.tint = player.originalTint;
             }
 
-            playerUtils.shootTime = theGame.game.time.now + playerUtils.shootTimeInterval;
+            player.shootTime = theGame.game.time.now + player.shootTimeInterval;
         }
     }
 };
@@ -228,6 +332,7 @@ function spawnNewteamBullets(theGame, player) {
             bullet.reset(x, y);
             bullet.damagePoints = 1;
             bullet.numPlayer = player.numPlayer;
+            bullet.tint = player.originalTint;
             bullet.body.velocity.y = bulletsConfig[i].yVel;
             bullet.body.velocity.x = bulletsConfig[i].xVel;
         }
@@ -297,6 +402,7 @@ function spawnThorBullets(theGame, player) {
             bullet.reset(x, y);
             bullet.damagePoints = 1;
             bullet.numPlayer = player.numPlayer;
+            bullet.tint = player.originalTint;
             bullet.body.velocity.y = bulletsConfig[i].yVel;
             bullet.body.velocity.x = bulletsConfig[i].xVel;
         }
@@ -334,7 +440,7 @@ playerUtils.fireGhostbusterPowerUp = function(theGame, player) {
 };
 
 playerUtils.firePowerUp = function(theGame, player) {
-    if (player.item && (theGame.game.time.now > playerUtils.shootTime)) {
+    if (player.item && (theGame.game.time.now > player.shootTime)) {
         audioUtils.playPowerUpAttackAudio(theGame);
         player.playerPowerUp.alpha = 0;
 
@@ -347,12 +453,12 @@ playerUtils.firePowerUp = function(theGame, player) {
         }
         player.item = '';
 
-        playerUtils.shootTime = theGame.game.time.now + 200;
+        player.shootTime = theGame.game.time.now + 200;
     }
 };
 
 playerUtils.callShenron = function(theGame, player) {
-    if ((utils.dragonBallsInPlayer === 7) && theGame.game.time.now > playerUtils.shootTime) {
+    if ((utils.dragonBallsInPlayer === 7) && theGame.game.time.now > player.shootTime) {
         utils.dragonBallsInPlayer = 0;
         theGame.hudDragonBallsText.setText(utils.dragonBallsInPlayer + '/7');
 
@@ -364,14 +470,14 @@ playerUtils.callShenron = function(theGame, player) {
         playerUtils.lifes++;
         theGame.hudLifesText.setText(playerUtils.lifes);
 
-        playerUtils.shootTime = theGame.game.time.now + 200;
+        player.shootTime = theGame.game.time.now + 200;
         audioUtils.playShenronAudio(theGame);
         audioUtils.playSuperSaiyanAudio(theGame);
 
         theGame.game.time.events.add(Phaser.Timer.SECOND * playerUtils.saiyanTimeSeconds, function() {
             player.isSaiyan = false;
             theGame.superSaiyanAudio.stop();
-            player.tint = playerUtils.color.one;
+            player.tint = player.originalTint;
         }, this);
     }
 };
@@ -400,7 +506,7 @@ playerUtils.generatePowerUpsPool = function(theGame) {
     theGame.powerUpsPool.setAll('outOfBoundsKill', true);
 };
 
-playerUtils.revivePlayer = function (player, theGame) {
+playerUtils.revivePlayer = function(player, theGame) {
     playerUtils.lifes--;
     theGame.hudLifesText.setText(playerUtils.lifes);
     player.revive(1);
@@ -411,6 +517,6 @@ playerUtils.revivePlayer = function (player, theGame) {
 
     theGame.game.time.events.add(playerUtils.invulnerabilityTime, function() {
         player.invulnerable = false;
-        player.tint = playerUtils.color.one;
+        player.tint = player.originalTint;
     }, theGame);
 }
