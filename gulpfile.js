@@ -9,6 +9,7 @@ var gulp = require('gulp')
   , jshint = require('gulp-jshint')
   , uglify = require('gulp-uglify')
   , connect = require('gulp-connect')
+  , server = require('gulp-express')
   , paths;
 
 paths = {
@@ -89,6 +90,10 @@ gulp.task('connect', function () {
     port: 9000,
     livereload: true
   });
+});
+
+gulp.task('server', function () {
+    server.run(['src/app.js', 'watch']);
 });
 
 gulp.task('watch', function () {

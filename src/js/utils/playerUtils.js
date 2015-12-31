@@ -1,7 +1,7 @@
 var playerUtils = {
     velocity: 200,
     bulletVelocity: 450,
-    lifesOriginal: 0,
+    lifesOriginal: 2,
     lifes: 2,
     invulnerabilityTime: 3000,
     timeToVulnerable: 2000,
@@ -29,7 +29,7 @@ playerUtils.addPlayers = function(theGame) {
 };
 
 playerUtils.managePlayers = function(theGame) {
-    theGame.playersGroup.forEachAlive(function(player) {
+    playersGroup.forEachAlive(function(player) {
         playerUtils.actions(theGame, player);
         player.textDamage.x = player.x;
         player.playerPowerUp.x = player.x;
@@ -44,40 +44,40 @@ playerUtils.actions = function(theGame, player) {
         player.body.velocity.setTo(0, 0);
 
         if (player.numPlayer === 1) {
-            if (player.cursors.left.isDown || theGame.pad2.isDown(player.cursorsPad.left)) {
+            if (player.cursors.left.isDown || theGame.pad2.isDown(player.cursorsPad.left) || player.cursorsSocket.left) {
                 player.body.velocity.x = -playerUtils.velocity;
-            } else if (player.cursors.right.isDown || theGame.pad2.isDown(player.cursorsPad.right)) {
+            } else if (player.cursors.right.isDown || theGame.pad2.isDown(player.cursorsPad.right) || player.cursorsSocket.right) {
                 player.body.velocity.x = playerUtils.velocity;
             }
 
-            if (player.actionControls.shoot.isDown || theGame.pad2.isDown(player.actionControlsPad.shoot)) {
+            if (player.actionControls.shoot.isDown || theGame.pad2.isDown(player.actionControlsPad.shoot) || player.actionControlsSocket.shoot) {
                 playerUtils.fireBullet(theGame, player);
             }
 
-            if (player.actionControls.powerUp.isDown || theGame.pad2.isDown(player.actionControlsPad.powerUp)) {
+            if (player.actionControls.powerUp.isDown || theGame.pad2.isDown(player.actionControlsPad.powerUp) || player.actionControlsSocket.powerUp) {
                 playerUtils.firePowerUp(theGame, player);
             }
 
-            if (player.actionControls.callShenron.isDown || theGame.pad2.isDown(player.actionControlsPad.callShenron)) {
+            if (player.actionControls.callShenron.isDown || theGame.pad2.isDown(player.actionControlsPad.callShenron) || player.actionControlsSocket.callShenron) {
                 playerUtils.callShenron(theGame, player);
             }
 
         } else {
-            if (player.cursors.left.isDown || theGame.pad1.isDown(player.cursorsPad.left)) {
+            if (player.cursors.left.isDown || theGame.pad1.isDown(player.cursorsPad.left) || player.cursorsSocket.left) {
                 player.body.velocity.x = -playerUtils.velocity;
-            } else if (player.cursors.right.isDown || theGame.pad1.isDown(player.cursorsPad.right)) {
+            } else if (player.cursors.right.isDown || theGame.pad1.isDown(player.cursorsPad.right) || player.cursorsSocket.right) {
                 player.body.velocity.x = playerUtils.velocity;
             }
 
-            if (player.actionControls.shoot.isDown || theGame.pad1.isDown(player.actionControlsPad.shoot)) {
+            if (player.actionControls.shoot.isDown || theGame.pad1.isDown(player.actionControlsPad.shoot) || player.actionControlsSocket.shoot) {
                 playerUtils.fireBullet(theGame, player);
             }
 
-            if (player.actionControls.powerUp.isDown || theGame.pad1.isDown(player.actionControlsPad.powerUp)) {
+            if (player.actionControls.powerUp.isDown || theGame.pad1.isDown(player.actionControlsPad.powerUp) || player.actionControlsSocket.powerUp) {
                 playerUtils.firePowerUp(theGame, player);
             }
 
-            if (player.actionControls.callShenron.isDown || theGame.pad1.isDown(player.actionControlsPad.callShenron)) {
+            if (player.actionControls.callShenron.isDown || theGame.pad1.isDown(player.actionControlsPad.callShenron) || player.actionControlsSocket.callShenron) {
                 playerUtils.callShenron(theGame, player);
             }
 
@@ -95,6 +95,19 @@ playerUtils.addPlayerOneKeyboardControls = function(player, theGame) {
         'shoot': theGame.game.input.keyboard.addKey(32), // space
         'powerUp': theGame.game.input.keyboard.addKey(75), // k
         'callShenron': theGame.game.input.keyboard.addKey(74), // j
+    };
+}
+
+playerUtils.addPlayerSocketControls = function(player, theGame) {
+    player.cursorsSocket = {
+        'left': false,
+        'right': false
+    };
+
+    player.actionControlsSocket = {
+        'shoot': false,
+        'powerUp': false,
+        'callShenron': false
     };
 }
 
@@ -169,19 +182,34 @@ playerUtils.mapControlsPad = function(theGame, player, numPlayer) {
     }
 };
 
-playerUtils.generatePlayers = function(theGame) {
-    theGame.playersGroup = theGame.game.add.group();
-    theGame.playersGroup.enableBody = true;
-    theGame.playersGroup.physicsBodyType = Phaser.Physics.ARCADE;
+// socket controls
+playerUtils.mapControlsSocket = function(theGame, player, numPlayer) {
     if (gameUtils.mode === 'twoPlayers') {
-        theGame.playersGroup.createMultiple(2, 'player');
-    } else {
-        theGame.playersGroup.createMultiple(1, 'player');
+        if (numPlayer === 1) {
+            playerUtils.addPlayerSocketControls(player);
+        } else {
+            playerUtils.addPlayerSocketControls(player);
+        }
+    } else if (gameUtils.mode === 'onePlayer') {
+        if (!numPlayer || numPlayer === 0) {
+            playerUtils.addPlayerSocketControls(player);
+        }
     }
-    theGame.playersGroup.setAll('anchor.x', 0.5);
-    theGame.playersGroup.setAll('anchor.y', 0.5);
-    theGame.playersGroup.setAll('body.fixedRotation', true);
-    theGame.playersGroup.setAll('body.collideWorldBounds', true);
+};
+
+playerUtils.generatePlayers = function(theGame) {
+    playersGroup = theGame.game.add.group();
+    playersGroup.enableBody = true;
+    playersGroup.physicsBodyType = Phaser.Physics.ARCADE;
+    if (gameUtils.mode === 'twoPlayers') {
+        playersGroup.createMultiple(2, 'player');
+    } else {
+        playersGroup.createMultiple(1, 'player');
+    }
+    playersGroup.setAll('anchor.x', 0.5);
+    playersGroup.setAll('anchor.y', 0.5);
+    playersGroup.setAll('body.fixedRotation', true);
+    playersGroup.setAll('body.collideWorldBounds', true);
 };
 
 playerUtils.setupPlayer = function(player, theGame) {
@@ -215,7 +243,7 @@ playerUtils.setupPlayer = function(player, theGame) {
 
 
 playerUtils.createPlayer = function(theGame, numPlayer) {
-    var newPlayer = theGame.playersGroup.getFirstExists(false);
+    var newPlayer = playersGroup.getFirstExists(false);
     if (numPlayer === 1) {
         newPlayer.reset(500, 550, 'player');
     } else {
@@ -226,7 +254,8 @@ playerUtils.createPlayer = function(theGame, numPlayer) {
 
 
     playerUtils.mapControls(theGame, newPlayer, numPlayer);
-    playerUtils.mapControlsPad(theGame, newPlayer, numPlayer)
+    playerUtils.mapControlsPad(theGame, newPlayer, numPlayer);
+    playerUtils.mapControlsSocket(theGame, newPlayer, numPlayer);
 };
 
 playerUtils.fireBullet = function(theGame, player) {

@@ -44,11 +44,11 @@
             playerUtils.managePlayers(this);
             this.game.physics.arcade.overlap(this.bullets, this.enemies, collisions.withPlayerBullets, null, this);
             this.game.physics.arcade.overlap(this.bullets, this.bossGroup, collisions.withPlayerBullets, null, this);
-            this.game.physics.arcade.overlap(this.enemyBullets, this.playersGroup, collisions.withEnemyBullets, null, this);
-            this.game.physics.arcade.overlap(this.enemies, this.playersGroup, collisions.withEnemies, null, this);
-            this.game.physics.arcade.overlap(this.items, this.playersGroup, collisions.withItems, null, this);
-            this.game.physics.arcade.overlap(this.triforcesGroup, this.playersGroup, collisions.withTriforces, null, this);
-            this.game.physics.arcade.overlap(this.dragonBalls, this.playersGroup, collisions.withDragonBalls, null, this);
+            this.game.physics.arcade.overlap(this.enemyBullets, playersGroup, collisions.withEnemyBullets, null, this);
+            this.game.physics.arcade.overlap(this.enemies, playersGroup, collisions.withEnemies, null, this);
+            this.game.physics.arcade.overlap(this.items, playersGroup, collisions.withItems, null, this);
+            this.game.physics.arcade.overlap(this.triforcesGroup, playersGroup, collisions.withTriforces, null, this);
+            this.game.physics.arcade.overlap(this.dragonBalls, playersGroup, collisions.withDragonBalls, null, this);
 
             this.enemies.forEachAlive(enemyUtils.enemyShoots, this);
             this.bossGroup.forEachAlive(enemyUtils.bossAttack, this);

@@ -35,7 +35,6 @@ utils.createVars = function (theGame) {
     theGame.enemies;
     theGame.bossGroup;
 
-    theGame.playersGroup;
     theGame.player0ScoreText;
     theGame.player1ScoreText;
     theGame.cursors;

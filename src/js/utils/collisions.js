@@ -7,7 +7,7 @@ collisions.withPlayerBullets = function(bullet, enemy) {
     bullet.kill();
     audioUtils.playHitEnemyAudio(this);
 
-    var playerWhoAttack = this.playersGroup.filter(function(child, index, children) {
+    var playerWhoAttack = playersGroup.filter(function(child, index, children) {
         return bullet.numPlayer === child.numPlayer;
     }, true);
 
@@ -103,7 +103,7 @@ collisions.killPlayer = function (player, theGame) {
 
     if (playerUtils.lifes > 0) {
         playerUtils.revivePlayer(player, theGame)
-    } else if (!theGame.playersGroup.getFirstAlive()) {
+    } else if (!playersGroup.getFirstAlive()) {
         utils.gameOver(theGame);
     }
 };

@@ -106,9 +106,12 @@
         + Mando XBOX
 
 
-##0.0.3: phaser 2.2.4 (futuro)<i class='icon-cancel'></i>
+##0.0.3: phaser 2.2.4
 
-+ websockets, controlar el juego con el móvil
++ Control de juego desde otro navegador usando websockets. socket.io
++ Nueva tarea "gulp server" que levanta un express
++ Controlador básico para dispositivo móvil
++ Conexión con el juego desde otro navegador conectado a la misma red. Ejemplo http://192.168.1.133:3000/controller
 
 
 ##0.0.4: phaser 2.2.4 (futuro)<i class='icon-cancel'></i>
@@ -124,26 +127,3 @@
 + Jefe HAL
     + Diseño
     + Habilidades
-
-##0.0.6: phaser 2.2.4 (futuro)<i class='icon-cancel'></i>
-
-+ Hasta cuatro jugadores en local
-    + Opción 1 (Dos con teclado)
-        + Teclado
-        + Teclado
-        + Mando Xbox
-        + Mando Xbox
-    + Opción 2 (Uno con teclado)
-        + Teclado
-        + Mando Xbox
-        + Mando Xbox
-        + Mando Xbox
-    + Opción 3 (Ninguno con teclado)
-        + Mando Xbox
-        + Mando Xbox
-        + Mando Xbox
-        + Mando Xbox
-
-
-##0.0.7: phaser 2.2.4 (futuro)<i class='icon-cancel'></i>
-+ Hasta cuatro jugadores por websockets

@@ -1,4 +1,4 @@
-# Shootem-totem 0.0.1
+# Shootem-totem 0.0.3
 
 Shootem Totem is a shoote'm up game tribute to great classic from my childhood. The licenses of those classics belong to their original creators.
 
@@ -8,29 +8,20 @@ Shootem Totem is a shoote'm up game tribute to great classic from my childhood. 
 
 ### One player (local)
 
-    + Keyboard
-    + XBOX pad
++ Keyboard
++ XBOX pad
 
 ### Two players (local)
 
-    + Keyboard
-    + XBOX pad
++ Keyboard
++ XBOX pad
 
-### Three players (local)
+### Two players (online)
 
-*In future release*
-
-### Four players (local)
-
-*In future release*
-
-
-### Three or four players (Online)
-
-*In future release*
-
-    + Mobile
-    + Tablet
++ With a mobile connected to the same network as your computer.
++ Look for the local IP of your machine. [https://diafygi.github.io/webrtc-ips/](https://diafygi.github.io/webrtc-ips/)
++ Enter an IP device. Example:
++ 192.168.1.133:3000/controller
 
 ## For developers
 
@@ -48,6 +39,11 @@ $ bower install
 
 ```sh
 $ gulp
+```
+
+socket.io
+```sh
+$ gulp server
 ```
 
 ```sh
