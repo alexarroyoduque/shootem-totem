@@ -310,7 +310,7 @@ utils.gameOver = function (theGame) {
     }, theGame);
 }
 
-utils.levelCompleted = function (theGame) {
+utils.levelCompleted = function (theGame, nextLevelId) {
     var centerX = theGame.game.world.centerX,
         style = {
             font: '50px Inconsolata',
@@ -332,13 +332,24 @@ utils.levelCompleted = function (theGame) {
     text2.anchor.setTo(0.5, 0.5);
     text2.alpha = 0;
 
-    text3 = theGame.game.add.text(centerX, 300, 'More levels coming soon!', style);
-    text3.anchor.setTo(0.5, 0.5);
-    text3.alpha = 0;
+    if (nextLevelId === '02' || nextLevelId === '03') {
+        text3 = theGame.game.add.text(centerX, 300, 'Get ready for next challenge!', style);
+        text3.anchor.setTo(0.5, 0.5);
+        text3.alpha = 0;
 
-    text4 = theGame.game.add.text(centerX, 400, 'Thanks for playing', style);
-    text4.anchor.setTo(0.5, 0.5);
-    text4.alpha = 0;
+        text4 = theGame.game.add.text(centerX, 400, 'Come on!', style);
+        text4.anchor.setTo(0.5, 0.5);
+        text4.alpha = 0;
+    } else {
+        text3 = theGame.game.add.text(centerX, 300, 'More levels coming soon!', style);
+        text3.anchor.setTo(0.5, 0.5);
+        text3.alpha = 0;
+
+        text4 = theGame.game.add.text(centerX, 400, 'Thanks for playing', style);
+        text4.anchor.setTo(0.5, 0.5);
+        text4.alpha = 0;
+    }
+    
 
     theGame.game.add.tween(text1)
         .to({
@@ -376,9 +387,16 @@ utils.levelCompleted = function (theGame) {
         }, 1000, Phaser.Easing.Linear.None, false, 4000, 0, false)
         .start();
 
-    theGame.game.time.events.add(Phaser.Timer.SECOND * 10, function() {
-        utils.goToMenu(theGame);
-    }, theGame);
+    if (nextLevelId === '02' || nextLevelId === '03') {
+        theGame.game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+            theGame.game.state.start('level' + nextLevelId);
+        }, theGame);
+    } else {
+        theGame.game.time.events.add(Phaser.Timer.SECOND * 10, function() {
+            utils.goToMenu(theGame);
+        }, theGame);
+    }
+
 
 };
 

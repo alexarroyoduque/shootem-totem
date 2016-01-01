@@ -13,6 +13,8 @@
 
             this.game.load.audio('menuAudio', 'assets/audio/RE.ogg');
             this.game.load.audio('level01Audio', 'assets/audio/Teriaah.ogg');
+            this.game.load.audio('level02Audio', 'assets/audio/Afterburner.ogg');
+            this.game.load.audio('level03Audio', 'assets/audio/Teriaah.ogg');
             this.game.load.audio('hitEnemyAudio', 'assets/audio/stop.ogg');
             this.game.load.audio('explosionAudio', 'assets/audio/explosion.ogg');
             this.game.load.audio('shootPlayerAudio', 'assets/audio/laser5.ogg');
@@ -40,8 +42,16 @@
             this.load.image('pyramid', 'assets/enemies/pyramid.png');
             this.load.spritesheet('stargate', 'assets/enemies/bosses/stargate.png', 160, 160);
             this.load.spritesheet('enemyBullets01', 'assets/enemies/enemyBullets01.png', 24, 24);
+            this.load.image('egg', 'assets/enemies/egg.png');
+            this.load.image('circle', 'assets/enemies/circle.png');
+            this.load.image('spider', 'assets/enemies/spider.png');
+            this.load.image('shell', 'assets/enemies/shell.png');
             this.load.image('background01', 'assets/backgrounds/background01.png');
             this.load.image('background02', 'assets/backgrounds/background02.png');
+            this.load.image('background03', 'assets/backgrounds/background03.png');
+            this.load.image('background04', 'assets/backgrounds/background04.png');
+            this.load.spritesheet('terminator1', 'assets/enemies/bosses/terminator1.png', 160, 160);
+            this.load.spritesheet('terminator2', 'assets/enemies/bosses/terminator2.png', 160, 160);
 
             this.load.image('title', 'assets/menu/title.png');
             this.load.image('creditsTitle', 'assets/menu/creditsTitle.png');

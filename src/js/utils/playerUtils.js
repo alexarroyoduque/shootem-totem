@@ -252,7 +252,6 @@ playerUtils.createPlayer = function(theGame, numPlayer) {
     newPlayer.numPlayer = numPlayer;
     playerUtils.setupPlayer(newPlayer, theGame);
 
-
     playerUtils.mapControls(theGame, newPlayer, numPlayer);
     playerUtils.mapControlsPad(theGame, newPlayer, numPlayer);
     playerUtils.mapControlsSocket(theGame, newPlayer, numPlayer);

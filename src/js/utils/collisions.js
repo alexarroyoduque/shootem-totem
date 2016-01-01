@@ -11,7 +11,8 @@ collisions.withPlayerBullets = function(bullet, enemy) {
         return bullet.numPlayer === child.numPlayer;
     }, true);
 
-    if (playerWhoAttack.length) {
+
+    if (playerWhoAttack.list && playerWhoAttack.list.length) {
         playerWhoAttack.list[0].score += enemy.points;
         utils.totalPoints+= enemy.points;
         interfaceUtils.updateScorePanel(this, playerWhoAttack.list[0]);
@@ -36,7 +37,14 @@ collisions.withPlayerBullets = function(bullet, enemy) {
         audioUtils.playExplosionAudio(this);
 
         if (enemy.key === 'stargate') {
-            utils.levelCompleted(this);
+            utils.levelCompleted(this, '02');
+        } else if (enemy.key === 'terminator1' || enemy.key === 'terminator2') {
+            this.terminatorsKilled++;
+            if (this.terminatorsKilled === 2) {
+                utils.levelCompleted(this, '03');
+            }
+        } else if (enemy.key === 'hal9000') {
+            utils.levelCompleted(this, '00');
         }
     }
 };

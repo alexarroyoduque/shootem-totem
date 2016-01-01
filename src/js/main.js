@@ -12,6 +12,6 @@ window.addEventListener('load', function() {
     game.state.add('gameMode', ns.GameMode);
     // levels
     game.state.add('level01', ns.Level01);
-    /* yo phaser:state new-state-files-put-here */
+    game.state.add('level02', ns.Level02);
     game.state.start('boot');
 }, false);

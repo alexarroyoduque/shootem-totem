@@ -18,14 +18,38 @@ var enemyUtils = {
         currentOriginal: 45000,
         current: 45000,
         nextWave: 20000
+    },
+    spawnEggsTime: {
+        currentOriginal: 15000,
+        current: 15000,
+        nextWave: 15000
+    },
+    spawnCirclesTime: {
+        currentOriginal: 20000,
+        current: 20000,
+        nextWave: 16000
+    },
+    spawnSpidersTime: {
+        currentOriginal: 24000,
+        current: 24000,
+        nextWave: 11000
+    },
+    spawnShellsTime: {
+        currentOriginal: 38000,
+        current: 38000,
+        nextWave: 20000
     }
 };
 
-enemyUtils.resetTimes = function (theGame) {
-    enemyUtils.spawnSquaresTime.current = theGame.game.time.now  + enemyUtils.spawnSquaresTime.current;
-    enemyUtils.spawnPentagonsTime.current = theGame.game.time.now  + enemyUtils.spawnPentagonsTime.current;
-    enemyUtils.spawnRectanglesTime.current = theGame.game.time.now  + enemyUtils.spawnRectanglesTime.current;
-    enemyUtils.spawnPyramidTime.current = theGame.game.time.now  + enemyUtils.spawnPyramidTime.current;
+enemyUtils.resetTimes = function(theGame) {
+    enemyUtils.spawnSquaresTime.current = theGame.game.time.now + enemyUtils.spawnSquaresTime.current;
+    enemyUtils.spawnPentagonsTime.current = theGame.game.time.now + enemyUtils.spawnPentagonsTime.current;
+    enemyUtils.spawnRectanglesTime.current = theGame.game.time.now + enemyUtils.spawnRectanglesTime.current;
+    enemyUtils.spawnPyramidTime.current = theGame.game.time.now + enemyUtils.spawnPyramidTime.current;
+    enemyUtils.spawnEggsTime.current = theGame.game.time.now + enemyUtils.spawnEggsTime.current;
+    enemyUtils.spawnCirclesTime.current = theGame.game.time.now + enemyUtils.spawnCirclesTime.current;
+    enemyUtils.spawnSpidersTime.current = theGame.game.time.now + enemyUtils.spawnSpidersTime.current;
+    enemyUtils.spawnShellsTime.current = theGame.game.time.now + enemyUtils.spawnShellsTime.current;
 }
 
 enemyUtils.generateEnemies = function(theGame) {
@@ -109,10 +133,42 @@ enemyUtils.setupEnemy = function(enemy) {
         enemy.bulletVelocityY = 220;
         enemy.shootTimeInterval = 5000;
         enemy.body.velocity.y = 50;
+    } else if (enemy.key === 'egg') {
+        enemy.body.setSize(50, 40);
+        enemy.health = 3;
+        enemy.shootTimeInterval = 5000;
+        enemy.damagePoints = 3;
+        enemy.bulletVelocityY = 300;
+        enemy.shootTimeInterval = 4000;
+        enemy.body.velocity.y = 200;
+    } else if (enemy.key === 'circle') {
+        enemy.body.setSize(50, 40);
+        enemy.health = 6;
+        enemy.shootTimeInterval = 5000;
+        enemy.damagePoints = 3;
+        enemy.bulletVelocityY = 210;
+        enemy.shootTimeInterval = 4000;
+        enemy.body.velocity.y = 60;
+    } else if (enemy.key === 'spider') {
+        enemy.body.setSize(50, 40);
+        enemy.health = 5;
+        enemy.shootTimeInterval = 5000;
+        enemy.damagePoints = 3;
+        enemy.bulletVelocityY = 180;
+        enemy.shootTimeInterval = 4000;
+        enemy.body.velocity.y = 120;
+        enemy.body.velocity.x = 20 * utils.getRandomInt(-2, 2);
+    } else if (enemy.key === 'shell') {
+        enemy.body.setSize(100, 50, 0, 25);
+        enemy.health = 10;
+        enemy.shootTimeInterval = 5000;
+        enemy.damagePoints = 3;
+        enemy.bulletVelocityY = 200;
+        enemy.shootTimeInterval = 4000;
+        enemy.body.velocity.y = 45;
     }
 
     enemyUtils.addItemToEnemy(enemy);
-
 };
 
 enemyUtils.generateEnemyBullets = function(theGame) {
@@ -152,6 +208,18 @@ enemyUtils.enemyShoots = function(enemy) {
             } else if (enemy.key === 'pyramid') {
                 enemyBullet.body.sprite.frame = 4;
                 this.game.physics.arcade.moveToObject(enemyBullet, playersGroup.getRandom(), enemy.bulletVelocityY);
+            } else if (enemy.key === 'egg') {
+                enemyBullet.body.sprite.frame = 5;
+                enemyBullet.body.velocity.y = enemy.bulletVelocityY;
+            } else if (enemy.key === 'circle') {
+                enemyBullet.body.sprite.frame = 6;
+                this.game.physics.arcade.moveToObject(enemyBullet, playersGroup.getRandom(), enemy.bulletVelocityY);
+            } else if (enemy.key === 'spider') {
+                enemyBullet.body.sprite.frame = 7;
+                enemyBullet.body.velocity.y = enemy.bulletVelocityY;
+            } else if (enemy.key === 'shell') {
+                enemyBullet.body.sprite.frame = 8;
+                this.game.physics.arcade.moveToObject(enemyBullet, playersGroup.getRandom(), enemy.bulletVelocityY);
             }
         }
     }
@@ -170,8 +238,10 @@ enemyUtils.bossAttack = function(enemy) {
             if (enemy.key === 'stargate') {
                 enemyBullet.body.sprite.frame = 4;
                 this.game.physics.arcade.moveToObject(enemyBullet, playersGroup.getRandom(), enemy.bulletVelocityY);
-            }
-
+            } else if (enemy.key === 'terminator1' || enemy.key === 'terminator2') {
+                enemyBullet.body.sprite.frame = 1;
+                this.game.physics.arcade.moveToObject(enemyBullet, playersGroup.getRandom(), enemy.bulletVelocityY);
+            } 
         }
     }
 
@@ -254,33 +324,98 @@ enemyUtils.spawnPyramidPack = function(theGame) {
     }
 };
 
-enemyUtils.spawnBoss = function (theGame) {
-    if (theGame.levelId === '01') {
-        theGame.bossGroup.create(300, 50, 'stargate');
+enemyUtils.spawnEggsPack = function(theGame) {
+    if (theGame.game.time.now > enemyUtils.spawnEggsTime.current) {
+        theGame.enemies.create(100, -120, 'egg');
+        theGame.enemies.create(150, -100, 'egg');
+        theGame.enemies.create(200, -80, 'egg');
+        theGame.enemies.create(250, -60, 'egg');
+        theGame.enemies.create(300, -40, 'egg');
+        theGame.enemies.create(350, -20, 'egg');
+        theGame.enemies.create(400, 0, 'egg');
+        theGame.enemies.create(450, -20, 'egg');
+        theGame.enemies.create(500, -40, 'egg');
+        theGame.enemies.create(550, -60, 'egg');
+        theGame.enemies.create(600, -80, 'egg');
+        theGame.enemies.create(650, -100, 'egg');
+        theGame.enemies.create(700, -120, 'egg');
 
-        theGame.bossGroup.forEachAlive(function (enemy) {
-            enemy.body.setSize(100, 100);
+        theGame.enemies.forEachAlive(enemyUtils.setupEnemy, theGame);
+        enemyUtils.spawnEggsTime.current = theGame.game.time.now + enemyUtils.spawnEggsTime.nextWave;
+    }
+};
 
-            enemy.animations.add('standby', [0,1,2,3,2,1], 8, true);
-            enemy.animations.play('standby');
-            enemy.shootTime = 400;
-            enemy.shootTimeInterval = 1000;
+enemyUtils.spawnCirclesPack = function(theGame) {
+    if (theGame.game.time.now > enemyUtils.spawnCirclesTime.current) {
+        theGame.enemies.create(150, 20, 'circle');
+        theGame.enemies.create(150, -120, 'circle');
+        theGame.enemies.create(100, -50, 'circle');
+        theGame.enemies.create(200, -50, 'circle');
 
-            enemy.shootTime2 = 4000;
-            enemy.shootTimeInterval2 = 4000;
+        theGame.enemies.create(700, 20, 'circle');
+        theGame.enemies.create(700, -120, 'circle');
+        theGame.enemies.create(650, -50, 'circle');
+        theGame.enemies.create(750, -50, 'circle');
 
-            enemy.damagePoints = 4;
-            enemy.bulletVelocityY = 100;
-            enemy.points = 120;
-            enemy.health = 200;
-            enemy.alpha = 0;
+        theGame.enemies.forEachAlive(enemyUtils.setupEnemy, theGame);
+        enemyUtils.spawnCirclesTime.current = theGame.game.time.now + enemyUtils.spawnCirclesTime.nextWave;
+    }
+};
 
-            enemy.anchor.x = 0.5;
-            enemy.anchor.y = 0.5;
+enemyUtils.spawnSpidersPack = function(theGame) {
+    if (theGame.game.time.now > enemyUtils.spawnSpidersTime.current) {
+        theGame.enemies.create(50, -20, 'spider');
+        theGame.enemies.create(100, -10, 'spider');
+        theGame.enemies.create(200, -40, 'spider');
+        theGame.enemies.create(300, -20, 'spider');
+        theGame.enemies.create(400, -30, 'spider');
+        theGame.enemies.create(500, -40, 'spider');
+        theGame.enemies.create(600, -20, 'spider');
+        theGame.enemies.create(650, -10, 'spider');
 
-            enemy.body.velocity.y = 0;
-            enemy.body.velocity.x = 0;
-            enemy.body.kinematic = true;
+        theGame.enemies.forEachAlive(enemyUtils.setupEnemy, theGame);
+        enemyUtils.spawnSpidersTime.current = theGame.game.time.now + enemyUtils.spawnSpidersTime.nextWave;
+    }
+};
+
+enemyUtils.spawnShellsPack = function(theGame) {
+    if (theGame.game.time.now > enemyUtils.spawnShellsTime.current) {
+        theGame.enemies.create(150, -10, 'shell');
+        theGame.enemies.create(400, -50, 'shell');
+        theGame.enemies.create(650, -10, 'shell');
+
+        theGame.enemies.forEachAlive(enemyUtils.setupEnemy, theGame);
+        enemyUtils.spawnShellsTime.current = theGame.game.time.now + enemyUtils.spawnShellsTime.nextWave;
+    }
+};
+
+enemyUtils.spawnStargate = function(theGame) {
+
+    theGame.bossGroup.create(300, 50, 'stargate');
+
+    theGame.bossGroup.forEachAlive(function(enemy) {
+        enemy.body.setSize(100, 100);
+
+        enemy.animations.add('standby', [0, 1, 2, 3, 2, 1], 8, true);
+        enemy.animations.play('standby');
+        enemy.shootTime = 400;
+        enemy.shootTimeInterval = 1000;
+
+        enemy.shootTime2 = 4000;
+        enemy.shootTimeInterval2 = 4000;
+
+        enemy.damagePoints = 4;
+        enemy.bulletVelocityY = 100;
+        enemy.points = 120;
+        enemy.health = 200;
+        enemy.alpha = 0;
+
+        enemy.anchor.x = 0.5;
+        enemy.anchor.y = 0.5;
+
+        enemy.body.velocity.y = 0;
+        enemy.body.velocity.x = 0;
+        enemy.body.kinematic = true;
 
         theGame.game.add.tween(enemy)
             .to({
@@ -318,7 +453,67 @@ enemyUtils.spawnBoss = function (theGame) {
             .loop()
             .start();
 
-        }, theGame);
-    }
+    }, theGame);
+
 };
 
+enemyUtils.spawnTerminator = function(theGame) {
+    theGame.bossGroup.create(300, 50, 'terminator1');
+    theGame.bossGroup.create(500, 50, 'terminator2');
+
+    theGame.bossGroup.forEachAlive(function(enemy) {
+        enemy.body.setSize(100, 100);
+
+        enemy.animations.add('standby', [0, 1, 2, 3, 2, 1], 16, true);
+        enemy.animations.play('standby');
+        enemy.shootTime = 1000;
+        enemy.shootTimeInterval = 700;
+
+        enemy.shootTime2 = 4000;
+        enemy.shootTimeInterval2 = 4000;
+
+        enemy.damagePoints = 4;
+        enemy.bulletVelocityY = 140;
+        enemy.points = 120;
+        enemy.health = 180;
+        enemy.alpha = 0;
+
+        enemy.anchor.x = 0.5;
+        enemy.anchor.y = 0.5;
+
+        enemy.body.velocity.y = 0;
+        enemy.body.velocity.x = 0;
+        enemy.body.kinematic = true;
+
+        theGame.game.add.tween(enemy)
+            .to({
+                alpha: 1
+            }, 3000, Phaser.Easing.Quadratic.InOut)
+            .start();
+
+        theGame.game.add.tween(enemy.body)
+            .to({
+                y: enemy.body.y + 10,
+                x: enemy.body.x + 50
+            }, 3000, Phaser.Easing.Quadratic.InOut)
+            .to({
+                y: enemy.body.y - 5,
+                x: enemy.body.x - 50
+            }, 2800, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x,
+                y: enemy.body.y
+            }, 2000, Phaser.Easing.Quadratic.InOut)
+            .loop()
+            .start();
+    }, theGame);
+};
+
+enemyUtils.spawnBoss = function(theGame) {
+    if (theGame.levelId === '01') {
+        enemyUtils.spawnStargate(theGame);     
+    } else if (theGame.levelId === '02') {
+        enemyUtils.spawnTerminator(theGame);     
+    }
+
+};
