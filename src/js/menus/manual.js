@@ -33,7 +33,11 @@
             this.buttonTextGroup.add(this.game.add.text(centerX + 140, 180, 'Power ups', menuUtils.style));
 
             this.buttonGroup.add(this.game.add.button(centerX + 280, 180, 'button', this.showOnline, this, 1, 0, 1));
-            this.buttonTextGroup.add(this.game.add.text(centerX + 280, 180, 'Online', menuUtils.style));
+            this.buttonTextGroup.add(this.game.add.text(centerX + 280, 180, 'Mobile\ncontroller', {
+                font: '14px Inconsolata',
+                align: 'center',
+                fill: '#FFF'
+            }));
 
             this.buttonGroup.add(this.game.add.button(centerX - 340, 560, 'button', this.back, this, 1, 0, 1));
             this.buttonTextGroup.add(this.game.add.text(centerX - 340, 560, 'Back', menuUtils.style));
