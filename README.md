@@ -6,17 +6,12 @@ Shootem Totem is a shoote'm up game tribute to great classic from my childhood. 
 
 ## Players
 
-### One player (local)
+### One player or two players
 
 + Keyboard
 + XBOX pad
 
-### Two players (local)
-
-+ Keyboard
-+ XBOX pad
-
-### Two players (online)
+### One player or two players (with mobile phone)
 
 + With a mobile connected to the same network as your computer.
 + Look for the local IP of your machine. [https://diafygi.github.io/webrtc-ips/](https://diafygi.github.io/webrtc-ips/)

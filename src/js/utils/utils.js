@@ -388,11 +388,11 @@ utils.levelCompleted = function (theGame, nextLevelId) {
         .start();
 
     if (nextLevelId === '02' || nextLevelId === '03') {
-        theGame.game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+        theGame.game.time.events.add(Phaser.Timer.SECOND * 3, function() {
             theGame.game.state.start('level' + nextLevelId);
         }, theGame);
     } else {
-        theGame.game.time.events.add(Phaser.Timer.SECOND * 10, function() {
+        theGame.game.time.events.add(Phaser.Timer.SECOND * 8, function() {
             utils.goToMenu(theGame);
         }, theGame);
     }

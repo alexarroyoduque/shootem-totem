@@ -5,8 +5,8 @@ var enemyUtils = {
         nextWave: 16000
     },
     spawnPentagonsTime: {
-        currentOriginal: 24000,
-        current: 24000,
+        currentOriginal: 21000,
+        current: 21000,
         nextWave: 16000
     },
     spawnRectanglesTime: {
@@ -38,7 +38,12 @@ var enemyUtils = {
         currentOriginal: 38000,
         current: 38000,
         nextWave: 20000
-    }
+    },
+    spawnDiamondsTime: {
+        currentOriginal: 15000,
+        current: 15000,
+        nextWave: 11000
+    },
 };
 
 enemyUtils.resetTimes = function(theGame) {
@@ -50,6 +55,7 @@ enemyUtils.resetTimes = function(theGame) {
     enemyUtils.spawnCirclesTime.current = theGame.game.time.now + enemyUtils.spawnCirclesTime.current;
     enemyUtils.spawnSpidersTime.current = theGame.game.time.now + enemyUtils.spawnSpidersTime.current;
     enemyUtils.spawnShellsTime.current = theGame.game.time.now + enemyUtils.spawnShellsTime.current;
+    enemyUtils.spawnDiamondsTime.current = theGame.game.time.now + enemyUtils.spawnDiamondsTime.current;
 }
 
 enemyUtils.generateEnemies = function(theGame) {
@@ -238,7 +244,7 @@ enemyUtils.bossAttack = function(enemy) {
             if (enemy.key === 'stargate') {
                 enemyBullet.body.sprite.frame = 4;
                 this.game.physics.arcade.moveToObject(enemyBullet, playersGroup.getRandom(), enemy.bulletVelocityY);
-            } else if (enemy.key === 'terminator1' || enemy.key === 'terminator2') {
+            } else if (enemy.key === 'terminator1' || enemy.key === 'terminator2' || enemy.key === 'hal9000') {
                 enemyBullet.body.sprite.frame = 1;
                 this.game.physics.arcade.moveToObject(enemyBullet, playersGroup.getRandom(), enemy.bulletVelocityY);
             } 
@@ -250,6 +256,8 @@ enemyUtils.bossAttack = function(enemy) {
 
         if (enemy.key === 'stargate') {
             enemyUtils.spawnEnemiesPackStargate(this, enemy);
+        } else if (enemy.key === 'hal9000') {
+            enemyUtils.spawnDiamondsPack(this);
         }
     }
 };
@@ -274,6 +282,20 @@ enemyUtils.spawnSquaresPack = function(theGame) {
 
         theGame.enemies.forEachAlive(enemyUtils.setupEnemy, theGame);
         enemyUtils.spawnSquaresTime.current = theGame.game.time.now + enemyUtils.spawnSquaresTime.nextWave;
+    }
+};
+
+
+enemyUtils.spawnDiamondsPack = function(theGame) {
+    if (theGame.game.time.now > enemyUtils.spawnDiamondsTime.current) {
+        theGame.enemies.create(400, -10, 'diamond');
+        theGame.enemies.create(200, -110, 'diamond');
+        theGame.enemies.create(300, -110, 'diamond');
+        theGame.enemies.create(500, -110, 'diamond');
+        theGame.enemies.create(600, -110, 'diamond');
+
+        theGame.enemies.forEachAlive(enemyUtils.setupEnemy, theGame);
+        enemyUtils.spawnDiamondsTime.current = theGame.game.time.now + enemyUtils.spawnDiamondsTime.nextWave;
     }
 };
 
@@ -509,11 +531,102 @@ enemyUtils.spawnTerminator = function(theGame) {
     }, theGame);
 };
 
+enemyUtils.spawnHal9000 = function(theGame) {
+
+    theGame.bossGroup.create(400, 50, 'hal9000');
+
+    theGame.bossGroup.forEachAlive(function(enemy) {
+        enemy.body.setSize(56, 100);
+
+        enemy.animations.add('standby', [0, 1, 2, 3, 2, 1], 8, true);
+        enemy.animations.play('standby');
+        enemy.shootTime = 400;
+        enemy.shootTimeInterval = 1000;
+
+        enemy.shootTime2 = 4000;
+        enemy.shootTimeInterval2 = 4000;
+
+        enemy.damagePoints = 4;
+        enemy.bulletVelocityY = 100;
+        enemy.points = 130;
+        enemy.health = 240;
+        enemy.alpha = 0;
+
+        enemy.anchor.x = 0.5;
+        enemy.anchor.y = 0.5;
+
+        enemy.body.velocity.y = 0;
+        enemy.body.velocity.x = 0;
+        enemy.body.kinematic = true;
+
+        theGame.game.add.tween(enemy)
+            .to({
+                alpha: 1
+            }, 3000, Phaser.Easing.Quadratic.InOut)
+            .start();
+
+        theGame.game.add.tween(enemy.body)
+            .to({
+                y: enemy.body.y + 50
+            }, 200, Phaser.Easing.Quadratic.InOut)
+            .to({
+                y: enemy.body.y - 0,
+                x: enemy.body.x + 120
+            }, 400, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x - 20,
+                y: enemy.body.y + 50
+            }, 500, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x + 10,
+                y: enemy.body.y + 80
+            }, 600, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x - 200,
+                y: enemy.body.y + 80
+            }, 400, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x + 100,
+                y: enemy.body.y + 90
+            }, 400, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x + 10,
+                y: enemy.body.y - 20
+            }, 600, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x + 190,
+                y: enemy.body.y + 100
+            }, 500, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x + 80,
+                y: enemy.body.y
+            }, 600, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x + 250,
+                y: enemy.body.y - 10
+            }, 400, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x - 50,
+                y: enemy.body.y + 80
+            }, 600, Phaser.Easing.Quadratic.InOut)
+            .to({
+                x: enemy.body.x,
+                y: enemy.body.y
+            }, 500, Phaser.Easing.Quadratic.InOut)
+            .loop()
+            .start();
+
+    }, theGame);
+
+};
+
 enemyUtils.spawnBoss = function(theGame) {
     if (theGame.levelId === '01') {
         enemyUtils.spawnStargate(theGame);     
     } else if (theGame.levelId === '02') {
         enemyUtils.spawnTerminator(theGame);     
+    } else if (theGame.levelId === '03') {
+        enemyUtils.spawnHal9000(theGame);     
     }
 
 };

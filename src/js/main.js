@@ -13,5 +13,6 @@ window.addEventListener('load', function() {
     // levels
     game.state.add('level01', ns.Level01);
     game.state.add('level02', ns.Level02);
+    game.state.add('level03', ns.Level03);
     game.state.start('boot');
 }, false);

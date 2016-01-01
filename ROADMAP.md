@@ -113,17 +113,15 @@
 + Controlador básico para dispositivo móvil
 + Conexión con el juego desde otro navegador conectado a la misma red. Ejemplo http://192.168.1.133:3000/controller
 
-
-##0.0.4: phaser 2.2.4 (futuro)<i class='icon-cancel'></i>
-
 + Nivel 2
-+ Jefe Skynet
-    + Diseño
-    + Habilidades
-
-##0.0.5: phaser 2.2.4 (futuro)<i class='icon-cancel'></i>
+    + Enemigos
+    + Backgrounds
+    + Música
+    + Terminator 1 (jefe)
+    + Terminator 2 (jefe)
 
 + Nivel 3
-+ Jefe HAL
-    + Diseño
-    + Habilidades
+    + Enemigos
+    + Backgrounds
+    + Música
+    + Hal9000 (jefe)

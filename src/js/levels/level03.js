@@ -1,22 +1,22 @@
 (function() {
     'use strict';
 
-    function Level02() {
+    function Level03() {
         utils.createVars(this);
     }
 
-    Level02.prototype = {
+    Level03.prototype = {
         create: function() {
             this.game.sound.stopAll();
-            this.levelId = '02';
+            this.levelId = '03';
             utils.resetVars();
             this.terminatorsKilled = 0;
-            this.music = this.game.add.audio('level02Audio');
+            this.music = this.game.add.audio('level03Audio');
             this.music.play('', 0, 0.7, true);
             audioUtils.createLevelAudios(this);
 
-            this.bg1 = this.game.add.tileSprite(0, 0, 800, 600, 'background03');
-            this.bg2 = this.game.add.tileSprite(0, 0, 800, 600, 'background04');
+            this.bg1 = this.game.add.tileSprite(0, 0, 800, 600, 'background05');
+            this.bg2 = this.game.add.tileSprite(0, 0, 800, 600, 'background06');
 
             enemyUtils.resetTimes(this);
             utils.resetTimes(this);
@@ -66,13 +66,10 @@
             }
 
             if (!this.stopDefaultBehavior) {
-                enemyUtils.spawnEggsPack(this);
-                enemyUtils.spawnCirclesPack(this);
+                enemyUtils.spawnDiamondsPack(this);
+                enemyUtils.spawnPentagonsPack(this);
                 enemyUtils.spawnSpidersPack(this);
                 enemyUtils.spawnShellsPack(this);
-            } else {
-                enemyUtils.spawnEggsPack(this);
-                enemyUtils.spawnSpidersPack(this);
             }
 
         },
@@ -85,5 +82,5 @@
     };
 
     window['shootem-totem'] = window['shootem-totem'] || {};
-    window['shootem-totem'].Level02 = Level02;
+    window['shootem-totem'].Level03 = Level03;
 }());
