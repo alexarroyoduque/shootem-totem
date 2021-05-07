@@ -2,6 +2,46 @@
 
 [TOC]
 
+##0.0.4: phaser 2.1.3
+
++ Firebase deploy
++ Gulp 4
++ gulp build fixed
+
+##0.0.3: phaser 2.2.4
+
++ Control de juego desde otro navegador usando websockets. socket.io
++ Nueva tarea "gulp server" que levanta un express
++ Controlador básico para dispositivo móvil
++ Conexión con el juego desde otro navegador conectado a la misma red. Ejemplo http://192.168.1.133:3000/controller
+
++ Nivel 2
+    + Enemigos
+    + Backgrounds
+    + Música
+    + Terminator 1 (jefe)
+    + Terminator 2 (jefe)
+
++ Nivel 3
+    + Enemigos
+    + Backgrounds
+    + Música
+    + Hal9000 (jefe)
+
+##0.0.2: phaser 2.2.4
+
++ Dos jugadores
+    + En phaser gestionar los jugadores como grupo
+    + Opción 1
+        + Teclado
+        + Teclado
+    + Opción 2
+        + Teclado
+        + Mando XBOX
+    + Opción 3
+        + Mando XBOX
+        + Mando XBOX
+
 ##0.0.1: phaser 2.2.4
 
 + Background
@@ -89,39 +129,3 @@
     + Sonido al lanzar powerups
     + Sonido al invocar Shenron
     + Sonido super guerrero
-
-
-##0.0.2: phaser 2.2.4
-
-+ Dos jugadores
-    + En phaser gestionar los jugadores como grupo
-    + Opción 1
-        + Teclado
-        + Teclado
-    + Opción 2
-        + Teclado
-        + Mando XBOX
-    + Opción 3
-        + Mando XBOX
-        + Mando XBOX
-
-
-##0.0.3: phaser 2.2.4
-
-+ Control de juego desde otro navegador usando websockets. socket.io
-+ Nueva tarea "gulp server" que levanta un express
-+ Controlador básico para dispositivo móvil
-+ Conexión con el juego desde otro navegador conectado a la misma red. Ejemplo http://192.168.1.133:3000/controller
-
-+ Nivel 2
-    + Enemigos
-    + Backgrounds
-    + Música
-    + Terminator 1 (jefe)
-    + Terminator 2 (jefe)
-
-+ Nivel 3
-    + Enemigos
-    + Backgrounds
-    + Música
-    + Hal9000 (jefe)

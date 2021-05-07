@@ -6,13 +6,18 @@ var playersGroup = [];
     function GameMode() {
 
         try {
-            this.socket = io();
+            var isIoDefined = false;
+            if (typeof io !== 'undefined') {
+                isIoDefined = true;
+            }
+            this.socket = isIoDefined ? io() : '';
             var self = this.socket,
                 playerAction,
                 numberOfPlayer,
                 playerInGroup;
 
-            self.on('connect', function() {
+            if (isIoDefined) {
+                self.on('connect', function() {
                 console.log('conectado desde screen');
 
                 self.emit('register_screen');
@@ -74,6 +79,8 @@ var playersGroup = [];
                     console.log('Algunos jugadores no están listos');
                 });
             });
+
+            }
         
         }
         catch(err) {
@@ -106,15 +113,15 @@ var playersGroup = [];
             this.buttonTextGroup.add(this.game.add.text(centerX - 200, 425, '2 players', menuUtils.styleJumbo));
 
             // https://diafygi.github.io/webrtc-ips/
-            getIPs(function(ip) {
-                if(ip.match(/^(192\.168\.|169\.254\.|10\.|172\.(1[6-9]|2\d|3[01]))/)) {
-                    var urlText = this.game.add.text(centerX + 150, 450, ip + ':3000/controller', menuUtils.style);
-                    urlText.anchor.setTo(0.5, 0.5);
-                }
-            }.bind(this));
+            // getIPs(function(ip) {
+            //     if(ip.match(/^(192\.168\.|169\.254\.|10\.|172\.(1[6-9]|2\d|3[01]))/)) {
+            //         var urlText = this.game.add.text(centerX + 150, 450, ip + ':3000/controller', menuUtils.style);
+            //         urlText.anchor.setTo(0.5, 0.5);
+            //     }
+            // }.bind(this));
 
             this.socketTextGroup.add(this.game.add.text(centerX + 150, 280, 'Play with your mobile!', menuUtils.styleJumbo));
-            this.socketTextGroup.add(this.game.add.text(centerX + 150, 360, 'Only with server opened.\nYou need run "gulp server".\nConnect a mobile to same network\nas your computer.\nEnter the next url in mobile browser:', menuUtils.style));
+            this.socketTextGroup.add(this.game.add.text(centerX + 150, 360, '\nFor developers, download this project:\nhttps://github.com/alexarroyoduque/shootem-totem\nand install dependencias with node 10.\n\nRun "gulp server" task.\nConnect a mobile to same network\nas your computer.\nEnter url in mobile browser, for example:\nhttp://192.168.1.33:3000/controller', menuUtils.style));
             this.socketTextGroup.forEach(this.setupSocketText, this);
             
             this.buttonGroup.add(this.game.add.button(centerX - 340, 560, 'button', this.back, this, 1, 0, 1));

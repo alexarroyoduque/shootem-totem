@@ -18,28 +18,28 @@ paths = {
   libs:   [
     'src/bower_components/phaser-official/build/custom/phaser-arcade-physics.min.js'
   ],
-  js:     ['src/js/**/*.js'],
+  js:     ['src/js/**/*.js', '!src/js/controller/**/*.js'],
   dist:   './dist/'
 };
 
 gulp.task('clean', function (cb) {
-  del([paths.dist], cb);
+  return del([paths.dist], cb);
 });
 
 gulp.task('copy-assets', function () {
-  gulp.src(paths.assets)
+  return gulp.src(paths.assets)
     .pipe(gulp.dest(paths.dist + 'assets'))
     .on('error', gutil.log);
 });
 
 gulp.task('copy-vendor', function () {
-  gulp.src(paths.libs)
+  return gulp.src(paths.libs)
     .pipe(gulp.dest(paths.dist))
     .on('error', gutil.log);
 });
 
 gulp.task('uglify', function () {
-  gulp.src(paths.js)
+  return gulp.src(paths.js)
     .pipe(concat('main.min.js'))
     .pipe(gulp.dest(paths.dist))
     .pipe(uglify({outSourceMaps: false}))
@@ -47,7 +47,7 @@ gulp.task('uglify', function () {
 });
 
 gulp.task('minifycss', function () {
- gulp.src(paths.css)
+  return gulp.src(paths.css)
     .pipe(minifycss({
       keepSpecialComments: false,
       removeEmpty: true
@@ -58,25 +58,25 @@ gulp.task('minifycss', function () {
 });
 
 gulp.task('processhtml', function() {
-  gulp.src('src/index.html')
+  return gulp.src('src/index.html')
     .pipe(processhtml({}))
     .pipe(gulp.dest(paths.dist))
     .on('error', gutil.log);
 });
 
 gulp.task('minifyhtml', function() {
-  gulp.src('dist/index.html')
+  return gulp.src('dist/index.html')
     .pipe(minifyhtml())
     .pipe(gulp.dest(paths.dist))
     .on('error', gutil.log);
 });
 
-gulp.task('lint', function() {
-  gulp.src(paths.js)
-    .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter('default'))
-    .on('error', gutil.log);
-});
+// gulp.task('lint', function() {
+//   gulp.src(paths.js)
+//     .pipe(jshint('.jshintrc'))
+//     .pipe(jshint.reporter('default'))
+//     .on('error', gutil.log);
+// });
 
 gulp.task('html', function(){
   gulp.src('src/*.html')
@@ -92,14 +92,28 @@ gulp.task('connect', function () {
   });
 });
 
+gulp.task('connect-dist', function () {
+    connect.server({
+      root: [__dirname + '/dist'],
+      port: 9000,
+      livereload: true
+    });
+  });
+
 gulp.task('server', function () {
     server.run(['src/app.js', 'watch']);
 });
 
 gulp.task('watch', function () {
   //gulp.watch(paths.js, ['lint']);
-  gulp.watch(['./src/index.html', paths.css, paths.js], ['html']);
+  gulp.watch('./src/index.html', gulp.series('html'));
+  gulp.watch(paths.css);
+  gulp.watch(paths.js);
 });
 
-gulp.task('default', ['connect', 'watch']);
-gulp.task('build', ['copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);
+
+
+gulp.task('default', gulp.series('connect', 'watch'));
+gulp.task('serve-dist', gulp.series('connect-dist'));
+
+gulp.task('build', gulp.series('clean', 'copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml'));

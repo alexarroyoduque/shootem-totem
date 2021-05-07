@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>shootem-totem</title>
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 
   <!-- build:css main.min.css -->
   <link rel="stylesheet" href="css/main.css">
@@ -17,11 +18,13 @@
   <!-- /build -->
 
   <!-- build:js phaser-arcade-physics.min.js-->
-  <script src="bower_components/phaser-official/build/custom/phaser-arcade-physics.min.js"></script>
+  <script src="bower_components/phaser-official/build/custom/phaser-arcade-physics.js"></script>
   <!-- /build -->
 
+  <!-- build:remove -->
   <script src="/socket.io/socket.io.js"></script>
   <script src="js/utils/getIps.js"></script>
+  <!-- /build -->
 
   <!-- build:js main.min.js -->
   <script src="js/utils/utils.js"></script>
@@ -47,6 +50,27 @@
   <!-- /build -->
 
 
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyC5qktFSuNM1rF-1AFf8qJgc9HiRpUa9zQ",
+        authDomain: "shootem-totem.firebaseapp.com",
+        projectId: "shootem-totem",
+        storageBucket: "shootem-totem.appspot.com",
+        messagingSenderId: "832135525407",
+        appId: "1:832135525407:web:5d92ac37e364d6655fd12a"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    </script>
 
 </body>
 </html>

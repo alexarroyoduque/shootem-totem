@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
 @font-face {
-    font-family: 'Inconsolata-Regular';
-    src: url('/assets/fonts/Inconsolata/Inconsolata-Regular.ttf');
+    font-family: 'Inconsolata', monospace;;
+    src: url('/assets/fonts/Inconsolasssta/Inconsolata-Regular.ttf');
     font-weight: normal;
     font-style: normal;
 }
